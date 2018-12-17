@@ -28,7 +28,7 @@ public class Player {
      * Takes 7 cards from the deck to begin
      */
     public void getStartingCards() {
-        for (int i = 0; i < Game.AMOUNT_OF_STARTING_CARDS; i++) {
+        for (int i = 0; i < GameTweaks.AMOUNT_OF_STARTING_TILES; i++) {
             takeOneCard();
         }
     }
@@ -72,10 +72,8 @@ public class Player {
                         if (Set.testIsAllSameColorAndIncremental(ordering)) {
                             System.out.println("Oh yeah!" + ordering);
 
-
                         }
                     }
-
 
                 }
 

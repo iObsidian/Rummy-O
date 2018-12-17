@@ -11,11 +11,9 @@ import java.util.List;
 
 public class Game {
 
-    public static final int AMOUNT_OF_STARTING_CARDS = 14;
-
     public boolean gameIsAlive;
 
-    private List<Tile> deck; //Deck of cards to pick from
+    private List<Tile> deck; //Deck of tiles to pick from
 
     public List<Set> groups;
 
@@ -44,18 +42,18 @@ public class Game {
     }
 
     /*
-     * Take cards out of the box...!
+     * Take tiles out of the box...!
      *
-     * Initial cards are :
+     * Initial tiles are :
      *
-     * 26 cards (ranging from 1 to 13 twice) of each color (4 colors)
-     * 2 faces (red and black)
+     * 26 tiles (ranging from 1 to 13 twice) of each color (4 colors)
+     * 2 jokers (red and black)
      *
-     * Total of 106 cards
+     * Total of 106 tiles
      */
     private void generateDefaultDeck() {
 
-        // Default cards (1 to 13 twice for each colors)
+        // Default tiles (1 to 13 twice for each colors)
         for (Color c : Color.values()) {
             for (int x = 0; x < 2; x++) {
                 for (int i = 1; i < 14; i++) {
@@ -66,11 +64,11 @@ public class Game {
             }
         }
 
-        // Face cards (RED face and BLACK face)
+        // Joker tiles (RED face and BLACK face)
         deck.add(new Tile(Color.RED, 0, false));
         deck.add(new Tile(Color.BLACK, 0, false));
 
-        //Make sure we get the correct amount of cards
+        //Make sure we get the correct amount of tiles
         assert deck.size() == ((4 * (2 * 13)) + 2);
     }
 

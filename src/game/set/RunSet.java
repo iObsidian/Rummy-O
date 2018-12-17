@@ -1,5 +1,6 @@
 package game.set;
 
+import game.GameTweaks;
 import game.tile.Color;
 import game.tile.Tile;
 
@@ -10,16 +11,14 @@ import java.util.List;
  */
 public class RunSet extends Set {
 
-    public RunSet(List<Tile> tiles) {
+    final Color color;
+    final int ID;
+
+    public RunSet(List<Tile> tiles, Color c, int ID) {
         super(tiles);
-    }
 
-    public Color getColor() {
-        return tiles.get(0).color;
-    }
-
-    public int getID() {
-        return tiles.get(0).ID;
+        this.color = c;
+        this.ID = ID;
     }
 
     @Override
@@ -36,11 +35,13 @@ public class RunSet extends Set {
 
                 boolean isIncremental = false;
 
-                if (previousID == 13) { //Wraps from 13 to 1
-                    isIncremental = (currentTile.ID == 1);
-                } else {
-                    isIncremental = (previousID + 1) == currentTile.ID;
+                if (GameTweaks.ONE_CAN_FOLLOW_THIRTEEN) {
+                    if (previousID == 13) { //Wraps from 13 to 1
+                        isIncremental = (currentTile.ID == 1);
+                    }
                 }
+
+                isIncremental = (previousID + 1) == currentTile.ID;
 
                 if (!isIncremental || (!currentTile.color.equals(previousColor))) {
                     return false;
