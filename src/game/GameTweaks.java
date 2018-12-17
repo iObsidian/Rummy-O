@@ -21,5 +21,4 @@ public class GameTweaks {
      */
     public static boolean IGNORE_JOKERS_COLOR = true;
 
-
 }

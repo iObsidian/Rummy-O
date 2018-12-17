@@ -6,16 +6,15 @@ import game.tile.Tile;
 import util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Game {
 
     public boolean gameIsAlive;
 
-    private List<Tile> deck; //Deck of tiles to pick from
+    private Set deck; //Deck of tiles to pick from
 
-    public List<Set> groups;
+    public List<Set> sets;
 
     public static void main(String[] args) {
         Game game = new Game();
@@ -23,8 +22,6 @@ public class Game {
         Player maman = new Player("Maman", game);
         Player alex = new Player("Alex", game);
         Player dan = new Player("Dan", game);
-
-        //game.setPlayers(maman);
 
         game.setPlayers(maman, alex, dan);
 
@@ -35,8 +32,8 @@ public class Game {
 
     public Game() {
         players = new ArrayList<>();
-        deck = new ArrayList<>();
-        groups = new ArrayList<>();
+        deck = new Set();
+        sets = new ArrayList<>();
         generateDefaultDeck();
         shuffleDeck();
     }
@@ -76,7 +73,7 @@ public class Game {
      * Shuffle them!
      */
     private void shuffleDeck() {
-        Collections.shuffle(deck);
+        deck.shuffle();
     }
 
     private void setPlayers(Player... players) {
@@ -118,7 +115,6 @@ public class Game {
 
         Log.game("Okay, " + startingPlayer.playerName + ", you're first.");
 
-
         startingPlayer.say("Great!");
 
         while (gameIsAlive) {
@@ -148,6 +144,5 @@ public class Game {
 
         return deck.remove(0);
     }
-
 
 }

@@ -1,15 +1,11 @@
 package util;
 
-import javax.smartcardio.Card;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
 public class Deprecated {
-
-
-
 
     public static <T> void permutations(List<T> items, Stack<T> permutation, int size) {
 

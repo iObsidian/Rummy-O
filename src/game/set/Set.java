@@ -1,30 +1,41 @@
 package game.set;
 
+import game.tile.Color;
 import game.tile.Tile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /*
-   A game.tile.Tile sequence in game, of which there can be many.
+ *  A list of tiles.
+ *
+ *  Represents the game deck and player hands.
+ *  See GroupSet and RunSet for possible game sets.
  */
-public abstract class Set {
+public class Set implements Iterable<Tile> {
 
     final Stack<Tile> tiles;
+
+    public Set() {
+        this.tiles = new Stack<>();
+    }
 
     public Set(List<Tile> tiles) {
         this.tiles = new Stack<>();
         this.tiles.addAll(tiles);
     }
 
-    public List<Tile> getTiles() {
-        return tiles;
+    @Override
+    public Iterator<Tile> iterator() {
+        return tiles.iterator();
     }
 
     /* Utility method to Add game.tile.Tile at specified index */
     public void add(int index, Tile tile) {
         tiles.add(index, tile);
+    }
+
+    public void add(Tile tile) {
+        tiles.add(tile);
     }
 
     // Utility method to Add game.tile.Tile at end  */
@@ -37,12 +48,11 @@ public abstract class Set {
         tiles.push(tile);
     }
 
-    public Tile removeCard(int index) {
+    public Tile remove(int index) {
         if (tiles.get(index) == null) {
             System.err.println("Error, card at index " + index + " does not exist in this sequence.");
         }
         return tiles.remove(index);
-
     }
 
     public List<Tile> getFaceCards() {
@@ -55,8 +65,36 @@ public abstract class Set {
         return faceTiles;
     }
 
+    public boolean containsColor(Color c) {
 
-    public abstract boolean isValidSet();
+        for (Tile t : tiles) {
+            if (t.color == c) {
+                return true;
+            }
+        }
 
+        return false;
+    }
 
+    public boolean isValidSet() {
+        return true;
+    }
+
+    public int size() {
+        return tiles.size();
+    }
+
+    public void shuffle() {
+        Collections.shuffle(tiles);
+    }
+
+    public static final Comparator<Tile> sortByID = Comparator.comparingInt(o -> o.ID);
+
+    public void sortByID() {
+        tiles.sort(sortByID);
+    }
+
+    public Tile get(int index) {
+        return tiles.get(index);
+    }
 }

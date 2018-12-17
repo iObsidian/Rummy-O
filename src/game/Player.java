@@ -4,7 +4,7 @@ import game.set.Set;
 import game.tile.Color;
 import game.tile.Tile;
 import util.Log;
-
+import javax.smartcardio.Card;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,13 +14,13 @@ public class Player {
 
     public final String playerName;
 
-    private final List<Tile> currentTiles;
+    private final Set currentTiles;
 
     private final Game game;
 
     public Player(String playerName, Game game) {
         this.playerName = playerName;
-        this.currentTiles = new ArrayList<Tile>();
+        this.currentTiles = new Set();
         this.game = game;
     }
 
@@ -44,45 +44,39 @@ public class Player {
 
         boolean played = false;
 
-        System.out.println(playerName + ", I have " + currentTiles.size() + " cards.");
+        say( "I have " + currentTiles.size() + " cards.");
 
 
-        for (Set group : game.groups) {
+        if (game.sets.size() == 0) {
 
+            say("Looking if I have a run...");
 
-            System.out.println();
+            for (Tile c : currentTiles) {
 
+                Set cardsOfTheSameColor = getAllCardsForColor(currentTiles, c.color);
 
-        }
+                cardsOfTheSameColor.sortByID();
 
+                for (int index = 0; index < cardsOfTheSameColor.size() + 1; index++) {
 
-        for (Tile c : currentTiles) {
+                    for (int size = 1; size < cardsOfTheSameColor.size() + 1; size++) {
 
-            List<Tile> cardsOfTheSameColor = getAllCardsForColor(currentTiles, c.color);
+                        Set ordering = getInRange(cardsOfTheSameColor, index, index + size);
 
-            Tile.sortByID(cardsOfTheSameColor);
+                        if (ordering.size() > 3) {
 
-            for (int index = 0; index < cardsOfTheSameColor.size() + 1; index++) {
-
-                for (int size = 1; size < cardsOfTheSameColor.size() + 1; size++) {
-
-                    List<Tile> ordering = getInRange(cardsOfTheSameColor, index, index + size);
-
-                    if (ordering.size() > 3) {
-                        if (Set.testIsAllSameColorAndIncremental(ordering)) {
-                            System.out.println("Oh yeah!" + ordering);
-
+                            if (Set.testIsAllSameColorAndIncremental(ordering)) {
+                                System.out.println("Oh yeah!" + ordering);
+                            }
                         }
+
                     }
 
                 }
 
-            }
+                //System.out.println("Found " + cardsOfTheSameColor.size() + " cards of the same color...");
 
-
-            //System.out.println("Found " + cardsOfTheSameColor.size() + " cards of the same color...");
-
-            //System.out.println(Arrays.asList(cardsOfTheSameColor));
+                //System.out.println(Arrays.asList(cardsOfTheSameColor));
             /*if(game.set.Set.testIsAllSameColorAndIncremental(
 
                     getInRange(cardsOfTheSameColor, index, index +size)))
@@ -91,22 +85,39 @@ public class Player {
                 System.out.println("Oh yeah!");
             }*/
 
+            }
+
+
+
 
         }
 
-        takeOneCard();
+
+
+
+
+
+
+
+
+
+
+        /*if (!played) {
+            takeOneCard();
+        }*/
+
 
 
     }
 
-    public static <T> List<List<T>> getAllPossibleWithoutChangingOrdering(List<T> list) {
+    public static List<Set> getAllPossibleWithoutChangingOrdering(Set list) {
 
-        List<List<T>> resultList = new ArrayList<>();
+        List<Set> resultList = new ArrayList<>();
 
         for (int index = 0; index < list.size() + 1; index++) {
             for (int size = 1; size < list.size() + 1; size++) {
 
-                List<T> inRange = getInRange(list, index, index + (size));
+                Set inRange = getInRange(list, index, index + (size));
 
                 if (inRange.size() > 0) {
                     resultList.add(getInRange(list, index, index + (size)));
@@ -117,37 +128,30 @@ public class Player {
         return resultList;
     }
 
-
     public static void main(String[] args) {
 
-        List<String> s = new ArrayList<>();
+       Set s = new Set();
 
 
-        s.add("Hello");
-        s.add("my");
-        s.add("name");
-        s.add("is");
-        s.add("slim");
-        s.add("shady");
-        s.add(".");
+        s.add(new Tile(Color.RED, 1));
+        s.add(new Tile(Color.RED, 2));
+        s.add(new Tile(Color.RED, 3));
+        s.add(new Tile(Color.RED, 4));
 
-        for (List<String> ss : getAllPossibleWithoutChangingOrdering(s)) {
-
+        for (Set ss : getAllPossibleWithoutChangingOrdering(s)) {
             System.out.println(ss);
         }
 
-
     }
-
 
     /**
      * Gets values between the range beginIndex and endIndex
      * <p>
      * If endIndex is larger than the size of the array, it's wrapped
      */
-    public static <T> List<T> getInRange(List<T> list, int beginIndex, int endIndex) {
+    public static <Card> Set getInRange(Set list, int beginIndex, int endIndex) {
 
-        List<T> rangedValues = new ArrayList<>();
+        Set rangedValues = new Set();
 
         for (int i = beginIndex; i < endIndex; i++) {
 
@@ -163,7 +167,6 @@ public class Player {
         return rangedValues;
 
     }
-
 
     /**
      * Utility method to getAllPermutations.
@@ -199,9 +202,9 @@ public class Player {
         }
     }
 
-    private List<Tile> getAllCardsForColor(List<Tile> tiles, Color color) {
+    private Set getAllCardsForColor(Set tiles, Color color) {
 
-        List<Tile> result = new ArrayList<>();
+        Set result = new Set();
 
         for (Tile tile : tiles) {
             if (tile.color.equals(color)) {
@@ -211,7 +214,6 @@ public class Player {
 
         return result;
     }
-
 
     public void say(String s) {
         Log.player(this.playerName, s);

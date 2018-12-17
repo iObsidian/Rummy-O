@@ -14,7 +14,6 @@ public class Tile {
      */
     public final int ID;
 
-
     /* Used to differentiate between this tile and the other tile of the same color and id */
     public final boolean isTwin;
 
@@ -48,14 +47,5 @@ public class Tile {
     public String toString() {
         return ID + " " + color;
     }
-
-    public static Comparator<Tile> sortByID = Comparator.comparingInt(o -> o.ID);
-
-    public static void sortByID(List<Tile> list) {
-        list.sort(sortByID);
-    }
-
-
-
 
 }
