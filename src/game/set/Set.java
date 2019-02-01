@@ -90,11 +90,36 @@ public class Set implements Iterable<Tile> {
 
     public static final Comparator<Tile> sortByID = Comparator.comparingInt(o -> o.ID);
 
-    public void sortByID() {
+    public Set sortByID() {
         tiles.sort(sortByID);
+        return this;
     }
 
     public Tile get(int index) {
         return tiles.get(index);
     }
+
+    public Set getAllCardsForColor(Color color) {
+        Set result = new Set();
+        for (Tile tile : tiles) {
+            if (tile.color.equals(color)) {
+                result.add(tile);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+
+        StringBuilder s = new StringBuilder();
+
+        for (Tile tile : tiles) {
+            s.append("[").append(tile).append("],");
+        }
+
+        return s.toString();
+
+    }
+
 }

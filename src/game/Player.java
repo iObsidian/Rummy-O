@@ -4,7 +4,7 @@ import game.set.Set;
 import game.tile.Color;
 import game.tile.Tile;
 import util.Log;
-import javax.smartcardio.Card;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,12 +44,20 @@ public class Player {
 
         boolean played = false;
 
-        say( "I have " + currentTiles.size() + " cards.");
-
+        say("I have " + currentTiles.size() + " cards.");
 
         if (game.sets.size() == 0) {
 
             say("Looking if I have a run...");
+
+            for (Color c : Color.values()) {
+
+                Set cardsOfThisColor = currentTiles.getAllCardsForColor(c).sortByID();
+
+                System.out.println(cardsOfThisColor);
+
+            }
+/*
 
             for (Tile c : currentTiles) {
 
@@ -83,12 +91,11 @@ public class Player {
 
             {
                 System.out.println("Oh yeah!");
-            }*/
-
             }
 
+            }*/
 
-
+            takeOneCard();
 
         }
 
@@ -105,8 +112,6 @@ public class Player {
         /*if (!played) {
             takeOneCard();
         }*/
-
-
 
     }
 
@@ -130,8 +135,7 @@ public class Player {
 
     public static void main(String[] args) {
 
-       Set s = new Set();
-
+        Set s = new Set();
 
         s.add(new Tile(Color.RED, 1));
         s.add(new Tile(Color.RED, 2));
@@ -200,19 +204,6 @@ public class Player {
             /* pop and put the removed item back */
             items.add(permutation.pop());
         }
-    }
-
-    private Set getAllCardsForColor(Set tiles, Color color) {
-
-        Set result = new Set();
-
-        for (Tile tile : tiles) {
-            if (tile.color.equals(color)) {
-                result.add(tile);
-            }
-        }
-
-        return result;
     }
 
     public void say(String s) {

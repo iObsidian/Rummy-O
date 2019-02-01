@@ -33,17 +33,16 @@ public class RunSet extends Set {
                 int previousID = previousTile.ID;
                 Color previousColor = previousTile.color;
 
+                boolean isSameColor = currentTile.color.equals(previousColor);
                 boolean isIncremental = false;
 
-                if (GameTweaks.ONE_CAN_FOLLOW_THIRTEEN) {
-                    if (previousID == 13) { //Wraps from 13 to 1
-                        isIncremental = (currentTile.ID == 1);
-                    }
+                if (previousID == 13 && GameTweaks.ONE_CAN_FOLLOW_THIRTEEN) {
+                    isIncremental = (currentTile.ID == 1);
+                } else {
+                    isIncremental = (previousID + 1) == currentTile.ID;
                 }
 
-                isIncremental = (previousID + 1) == currentTile.ID;
-
-                if (!isIncremental || (!currentTile.color.equals(previousColor))) {
+                if (!isIncremental || !isSameColor) {
                     return false;
                 }
             }
